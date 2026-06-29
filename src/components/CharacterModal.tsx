@@ -881,11 +881,12 @@ export default function CharacterModal({
 
         {/* Header */}
         <div
-          className={`p-2 md:p-3 pt-[max(env(safe-area-inset-top),0.5rem)] md:pt-[max(env(safe-area-inset-top),0.75rem)] flex items-center justify-between shrink-0 relative z-20 border-b backdrop-blur-md ${
+          className={`p-2 md:p-3 flex flex-wrap gap-y-2 items-center justify-between shrink-0 relative z-20 border-b backdrop-blur-md ${
             isDark
               ? "border-white/5 bg-black/60"
               : "border-amber-200/60 bg-[#FFFDF9]/95 shadow-sm"
           }`}
+          style={{ paddingTop: 'max(env(safe-area-inset-top), 0.5rem)' }}
         >
           <div className="flex items-center gap-2">
             <div>
