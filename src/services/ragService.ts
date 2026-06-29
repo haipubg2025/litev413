@@ -171,17 +171,7 @@ class RAGService {
     
     this.initPromise = new Promise(async (resolve) => {
       try {
-        const isCached = await this.checkModelCached();
-        if (!isCached && this.downloadStatus !== 'downloading') {
-           // Bắt buộc người dùng tải từ Settings
-           console.warn(`[RAG] Mô hình chưa được tải. Cần tải thủ công từ Cài Đặt!`);
-           this.useFallback = true;
-           this.initializing = false;
-           this.downloadStatus = 'idle';
-           resolve();
-           return;
-        }
-
+        // Đã bỏ block chặn tải tự động vì tính năng vào game tự tải là cần thiết
         console.log('[RAG] Đang nạp mô hình Embedding Cục bộ từ Cache/Settings...');
         this.extractor = await pipeline('feature-extraction', this.modelName, {
           progress_callback: (x: any) => {
