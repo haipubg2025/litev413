@@ -514,11 +514,22 @@ export default function Gameplay() {
   // Init RAG
   useEffect(() => {
     let isMounted = true;
-    toast.promise(ragService.init(), {
-      loading: "Đang tải bộ nhớ RAG (chạy AI Local)...",
-      success: "Khởi tạo bộ nhớ RAG cục bộ thành công!",
-      error: "Lỗi tải mô hình RAG.",
-    });
+    const initRAG = async () => {
+      const toastId = toast.loading("Đang tải bộ nhớ RAG (chạy AI Local)...");
+      try {
+        await ragService.init();
+        if (!isMounted) return;
+        if (ragService.isFallback) {
+          toast.success("RAG đang ở chế độ Fallback (Tìm kiếm VB)", { id: toastId });
+        } else {
+          toast.success("Mô hình RAG cục bộ (Xenova) đã được nạp!", { id: toastId });
+        }
+      } catch (err) {
+        if (!isMounted) return;
+        toast.error("Lỗi tải mô hình RAG.", { id: toastId });
+      }
+    };
+    initRAG();
     return () => {
       isMounted = false;
     };

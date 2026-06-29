@@ -864,7 +864,7 @@ export default function CharacterModal({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className={`fixed inset-0 z-50 backdrop-blur-md flex flex-col w-[100dvw] h-[100dvh] p-0 m-0 overflow-hidden ${isDark ? "bg-black/80" : "bg-amber-900/15"}`}
+      className={`fixed inset-0 z-50 backdrop-blur-md flex flex-col overflow-hidden ${isDark ? "bg-black/80" : "bg-amber-900/15"}`}
       onClick={onClose}
     >
       <div
@@ -881,7 +881,7 @@ export default function CharacterModal({
 
         {/* Header */}
         <div
-          className={`p-2 md:p-3 flex items-center justify-between shrink-0 relative z-20 border-b backdrop-blur-md ${
+          className={`p-2 md:p-3 pt-[max(env(safe-area-inset-top),0.5rem)] md:pt-[max(env(safe-area-inset-top),0.75rem)] flex items-center justify-between shrink-0 relative z-20 border-b backdrop-blur-md ${
             isDark
               ? "border-white/5 bg-black/60"
               : "border-amber-200/60 bg-[#FFFDF9]/95 shadow-sm"
@@ -1085,18 +1085,22 @@ export default function CharacterModal({
                   ) : (
                     <button
                       onClick={() => setShowConfirmUpdateModal(true)}
-                      className={`w-full max-w-[320px] font-bold py-3 px-4 rounded-xl shadow-lg transform transition flex items-center justify-center gap-2 ${
+                      disabled={
+                        !editedData?.pendingUpdates ||
+                        Object.keys(editedData.pendingUpdates).length === 0
+                      }
+                      className={`w-full max-w-[320px] font-bold py-3 px-4 rounded-xl shadow-lg transform transition flex items-center justify-center gap-2 disabled:cursor-not-allowed ${
                         editedData?.pendingUpdates &&
                         Object.keys(editedData.pendingUpdates).length > 0
                           ? "bg-green-500 hover:bg-green-600 text-white shadow-green-500/20 hover:-translate-y-1 active:translate-y-0"
-                          : "bg-slate-500/50 hover:bg-slate-600/50 text-white shadow-slate-500/20 hover:-translate-y-1 active:translate-y-0"
+                          : "bg-slate-500/50 text-white/50 shadow-slate-500/20"
                       }`}
                     >
                       <Check size={18} />{" "}
                       {editedData?.pendingUpdates &&
                       Object.keys(editedData.pendingUpdates).length > 0
                         ? "Xác Nhận Update NPC"
-                        : "Không có Update mới (Bấm để xem)"}
+                        : "Không có Update mới"}
                       {editedData?.pendingUpdates &&
                         Object.keys(editedData.pendingUpdates).length > 0 && (
                           <span className="bg-white text-green-600 text-xs px-2 py-0.5 rounded-full">

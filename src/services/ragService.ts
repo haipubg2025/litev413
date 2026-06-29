@@ -116,6 +116,7 @@ class RAGService {
 
   public get getDownloadStatus() { return this.downloadStatus; }
   public get getDownloadProgress() { return this.downloadProgress; }
+  public get isFallback() { return this.useFallback; }
 
   public async preloadModelFromSettings(onProgress?: (progress: number, status: string) => void) {
     if (this.extractor) {

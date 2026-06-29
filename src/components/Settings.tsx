@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { THEMES, ThemeType } from '../types';
-import { Check, Palette, Settings as SettingsIcon, ShieldCheck, Zap, Plus, Trash2, Play, Download, Upload, Database, FileText, RefreshCw, CheckCircle2, Server } from 'lucide-react';
+import { Check, Palette, Settings as SettingsIcon, ShieldCheck, Zap, Plus, Trash2, Play, Download, Upload, Database, FileText, RefreshCw, CheckCircle2, Server, X } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import confetti from 'canvas-confetti';
 import { toast } from '../utils/toast';
@@ -560,7 +560,26 @@ export default function Settings() {
                       </div>
                       <div className="flex items-center gap-3">
                         {modelDownloadStatus === 'success' && (
-                          <span className="text-sm font-bold text-green-400 px-3 py-1.5 bg-green-500/10 rounded-lg">Đã Tải Xong</span>
+                          <div className="flex items-center gap-2 bg-green-500/10 rounded-lg pr-1">
+                            <span className="text-sm font-bold text-green-400 px-3 py-1.5">Đã Tải Xong</span>
+                            <button
+                              onClick={async () => {
+                                localStorage.removeItem('rag_model_cached');
+                                setModelDownloadStatus('idle');
+                                setModelDownloadProgress(0);
+                                if ('caches' in window) {
+                                  try {
+                                    await caches.delete('transformers-cache');
+                                  } catch (e) {}
+                                }
+                                toast.success("Đã xóa bộ nhớ đệm của mô hình RAG cục bộ.");
+                              }}
+                              className="p-1.5 rounded-md hover:bg-green-500/20 text-green-400/70 hover:text-green-400 transition-colors"
+                              title="Xóa bộ nhớ đệm (Reset)"
+                            >
+                              <X size={14} strokeWidth={3} />
+                            </button>
+                          </div>
                         )}
                         {modelDownloadStatus === 'error' && (
                           <span className="text-sm font-bold text-red-400 px-3 py-1.5 bg-red-500/10 rounded-lg">Lỗi tải - Hãy thử lại</span>
@@ -580,7 +599,7 @@ export default function Settings() {
                              }
                           }}
                           disabled={modelDownloadStatus === 'downloading'}
-                          className={`px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-colors border border-white/10 hover:theme-panel shadow-none border border-transparent cursor-pointer disabled:opacity-50 ${currentTheme.textPrimary}`}
+                          className={`px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-colors border border-white/10 hover:theme-panel shadow-none border-transparent cursor-pointer disabled:opacity-50 ${currentTheme.textPrimary}`}
                           title="Kiểm tra sâu xem mô hình đã tồn tại chưa"
                         >
                           <RefreshCw size={16} /> Check
